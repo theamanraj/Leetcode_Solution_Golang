@@ -1,24 +1,21 @@
 func minimumAverageDifference(nums []int) int {
-	summation := make([]int, len(nums))
-	summation[0] = nums[0]
-	for i := 1; i < len(summation); i++ {
-		summation[i] = summation[i-1] + nums[i]
+	n, total := len(nums), 0
+	for _, num := range nums {
+		total += num
 	}
-	index := len(nums) - 1
-	minDiff := abs(summation[len(nums)-1] / len(nums))
-	for i := 0; i < len(summation)-1; i++ {
-		curDiff := abs(summation[i]/(i+1) - (summation[len(nums)-1]-summation[i])/(len(nums)-i-1))
-		// index might be len(nums) - 1, so we must check index with i while curDiff equal to minDiff
-		if curDiff < minDiff || (curDiff == minDiff && i < index) {
-			minDiff, index = curDiff, i
+	min, prefix, idx := total, 0, 0
+	for i := 0; i < n-1; i++ {
+		prefix += nums[i]
+		cur := prefix/(i+1) - (total-prefix)/(n-i-1)
+		if cur < 0 {
+			cur = -cur
+		}
+		if cur < min {
+			min, idx = cur, i
 		}
 	}
-	return index
-}
-
-func abs(v int) int {
-	if v > 0 {
-		return v
+	if total/n < min {
+		return n - 1
 	}
-	return v * -1
+	return idx
 }
