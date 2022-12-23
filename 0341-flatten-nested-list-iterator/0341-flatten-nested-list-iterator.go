@@ -24,38 +24,39 @@
  * func (this NestedInteger) GetList() []*NestedInteger {}
  */
 
+type node struct {
+    list []*NestedInteger
+    p int
+}
+
+
 type NestedIterator struct {
-    vals    []int
-    idx int    
+    stack []*node
 }
 
 func Constructor(nestedList []*NestedInteger) *NestedIterator {
-    var nums []int
-    flattern( nestedList, &nums)
-    return &NestedIterator{
-        vals: nums,        
-    }
+    return &NestedIterator{[]*node{&node{nestedList, 0}}} 
 }
-
-func flattern(  nestedList []*NestedInteger, nums *[]int){
-    for _, nest := range nestedList{
-        if nest.IsInteger(){
-            *nums=append(*nums, nest.GetInteger())
-            continue
-        }
-        flattern( nest.GetList(), nums)        
-    }
-}
-
-
 
 func (this *NestedIterator) Next() int {
-    if this.idx==len(this.vals) { return -1} //?
-    v := this.vals[this.idx]
-    this.idx++    
-    return v
+    this.HasNext()
+    c := this.stack[len(this.stack)-1]
+    ret := c.list[c.p].GetInteger()
+    c.p++
+    return ret
 }
 
 func (this *NestedIterator) HasNext() bool {
-    return this.idx<len(this.vals)
+    for len(this.stack) != 0 {
+        c := this.stack[len(this.stack)-1]
+        if c.p >= len(c.list) {
+            this.stack = this.stack[:len(this.stack)-1]
+        } else if c.list[c.p].IsInteger() {
+            return true
+        } else {
+            this.stack = append(this.stack, &node{c.list[c.p].GetList(), 0})
+            c.p++
+        }
+    }
+    return false
 }
