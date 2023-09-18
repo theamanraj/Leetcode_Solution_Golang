@@ -1,15 +1,14 @@
 func canJump(nums []int) bool {
-    if len(nums) == 1 { return true }
+    l := len(nums)
+    if l == 1 { return true }
     if nums[0] == 0 { return false }
-    dp := make([]bool, len(nums))
-    dp[0] = true
-    for i:= 0; i < len(nums); i++ {
-        for j:= i+1; j < len(nums); j++ {
-            //if nums[i] == 0 { continue }
-            dp[j] = dp[j] || dp[i] && (nums[i] >= j-i)
-            //if dp[len(nums)-1] == true { return true }
+    
+    goal := l-1
+
+    for i:=l-1; i>=0;i--{
+        if i+nums[i] >= goal {
+            goal = i
         }
     }
-    return dp[len(nums)-1]
+    return goal == 0
 }
-
