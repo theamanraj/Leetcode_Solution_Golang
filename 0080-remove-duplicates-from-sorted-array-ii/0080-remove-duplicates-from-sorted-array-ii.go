@@ -1,21 +1,14 @@
 func removeDuplicates(nums []int) int {
-    length := len(nums)
-    if length == 0 {
-        return 0
-    }
+    l := 0
+    visited := make(map[int] int)
     
-    cnt := 1
-    cur := 0
-    for i := 1; i < length; i++ {
-        if nums[cur] != nums[i] {
-            cnt = 1
-            cur++
-            nums[cur] = nums[i]
-        } else if cnt < 2 {
-            cnt++
-            cur++
-            nums[cur] = nums[i]
-        }        
+    for i := 0;i< len(nums);i++ {
+        visitedCount := visited[nums[i]]
+        if visitedCount < 2 {
+            visited[nums[i]] = visitedCount+1
+            nums[l] = nums[i]
+            l++
+        }
     }
-    return cur + 1
+    return l
 }
