@@ -1,19 +1,14 @@
 func removeNthFromEnd(head *ListNode, n int) *ListNode {
-	dummy := &ListNode{
-		Val:  0,
-		Next: head,
-	}
-	for ; n > 0; n-- {
-		head = head.Next
-	}
+    if head == nil || n <= 0 {return head}
+    preHeader := &ListNode{Next: head}
+    left, right := preHeader, head
 
-	prev := dummy
-	cur := dummy.Next
-	for ; head != nil; head = head.Next {
-		prev = prev.Next
-		cur = cur.Next
-	}
-
-	prev.Next = cur.Next
-	return dummy.Next
+    for i := 0; right != nil && i < n; i++ {
+        right = right.Next
+    }
+    for right != nil {
+        left, right = left.Next, right.Next
+    }
+    left.Next = left.Next.Next
+    return preHeader.Next
 }
