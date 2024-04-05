@@ -1,8 +1,25 @@
-func isGreater (w1, w2 string) bool {
-    if len(w1) > len(w2) {
-        return true
+func mergeAlternately(word1 string, word2 string) string {
+    word := ""
+    a, b := 0,0
+    for{
+    if (a < len(word1) && b < len(word2)){
+        word = word + string(word1[a])+string(word2[b])
+        a++
+        b++
+        continue
+    } 
+        break
     }
-    return false
+    v := checkGreater(word1,word2)
+    if v{
+          return word + sliceString(word1, a)
+    }
+    return word + sliceString(word2, b)
+    }
+
+
+func checkGreater(word1 string, word2 string) bool {
+    return len(word1) > len(word2)
 }
 
 func sliceString (s string, index int) string {
@@ -11,25 +28,4 @@ func sliceString (s string, index int) string {
         res = res + string(s[i])
     }
     return res
-}
-
-func mergeAlternately(word1 string, word2 string) string {
-    word := ""
-    i := 0
-    j := 0 
-    for {
-        if i<len(word1) && j<len(word2) {
-            word = word + string(word1[i]) + string(word2[j])
-            i++
-            j++
-            continue
-        }
-        break
-    }
-    
-    if isGreater(word1, word2) {
-        return word + sliceString(word1, i)
-    } 
-    
-    return word + sliceString(word2, j)
 }
